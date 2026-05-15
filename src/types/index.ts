@@ -21,6 +21,12 @@ export interface Customer {
   property_subtype: string;
   status?: 'Active' | 'Inactive' | 'Pending';
   created_date?: string;
+  property_image?: string;
+  kyc_status?: 'Verified' | 'Pending' | 'Rejected';
+  last_pickup?: string;
+  collection_performance?: number;
+  bin_fill_level?: number;
+  emergency_request?: boolean;
 }
 
 export interface DashboardStats {

@@ -23,7 +23,13 @@ export const MOCK_CUSTOMERS: Customer[] = [
     property_type: "Residential",
     property_subtype: "Apartment",
     status: 'Active',
-    created_date: '2024-03-15'
+    created_date: '2024-03-15',
+    property_image: 'https://images.unsplash.com/photo-1545324418-f1d3ac1ef38c?q=80&w=400&auto=format&fit=crop',
+    kyc_status: 'Verified',
+    last_pickup: '2 hours ago',
+    collection_performance: 98,
+    bin_fill_level: 45,
+    emergency_request: false
   },
   {
     id: 25,
@@ -47,7 +53,13 @@ export const MOCK_CUSTOMERS: Customer[] = [
     property_type: "Residential",
     property_subtype: "Gated Community",
     status: 'Active',
-    created_date: '2024-03-20'
+    created_date: '2024-03-20',
+    property_image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=400&auto=format&fit=crop',
+    kyc_status: 'Verified',
+    last_pickup: 'Yesterday',
+    collection_performance: 92,
+    bin_fill_level: 80,
+    emergency_request: true
   },
   {
     id: 26,
@@ -71,7 +83,13 @@ export const MOCK_CUSTOMERS: Customer[] = [
     property_type: "Commercial",
     property_subtype: "Office Complex",
     status: 'Pending',
-    created_date: '2024-04-01'
+    created_date: '2024-04-01',
+    property_image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop',
+    kyc_status: 'Pending',
+    last_pickup: '3 days ago',
+    collection_performance: 85,
+    bin_fill_level: 15,
+    emergency_request: false
   }
 ];
 
