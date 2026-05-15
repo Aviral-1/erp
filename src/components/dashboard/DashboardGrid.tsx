@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import { Responsive, useContainerWidth } from 'react-grid-layout';
-import '/node_modules/react-grid-layout/css/styles.css';
-import '/node_modules/react-resizable/css/styles.css';
+import { ResponsiveGridLayout, useContainerWidth } from 'react-grid-layout';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 import { useLayoutStore, WidgetConfig } from '@/store/useLayoutStore';
 import { BaseWidget } from './BaseWidget';
 import { 
@@ -55,12 +55,14 @@ export function DashboardGrid() {
     updateWidgets(updatedWidgets);
   };
 
-  const renderWidget = (widget: WidgetConfig) => {
+  const renderWidget = (widget: any) => {
+    const isRevenue = widget.type === 'revenue';
+    
     switch (widget.type) {
-      case 'stats':
-        const isRevenue = widget.id.includes('revenue');
+      case 'revenue':
+      case 'orders':
         return (
-          <BaseWidget title={widget.title} icon={isRevenue ? <TrendingUp size={18} className="text-primary" /> : <Users size={18} className="text-emerald-500" />}>
+          <BaseWidget title={widget.title} icon={isRevenue ? <BarChart3 size={18} className="text-primary" /> : <Truck size={18} className="text-emerald-500" />}>
             <div className="flex flex-col h-full justify-between">
               <div>
                 <div className="flex items-end gap-3">
@@ -94,45 +96,30 @@ export function DashboardGrid() {
             </div>
           </BaseWidget>
         );
-      case 'map':
+      case 'fleet':
         return (
-          <BaseWidget title={widget.title} icon={<MapIcon size={18} className="text-blue-400" />} className="p-0">
-            <div className="w-full h-full rounded-[24px] overflow-hidden bg-slate-950 relative border border-white/5 shadow-inner">
-              <Map center={[26.2389, 73.0243]} zoom={12} className="w-full h-full grayscale-[0.8] contrast-[1.2]" />
-              <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              
-              <div className="absolute top-4 left-4 z-10">
-                <div className="px-3 py-1.5 rounded-xl glass-dark border-white/10 flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-white">Live Operations</span>
-                </div>
-              </div>
-
-              <div className="absolute bottom-4 left-4 right-4 z-10">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/5">
-                    <p className="text-[8px] font-bold text-slate-500 uppercase">Active Fleet</p>
-                    <p className="text-xs font-black text-white">38 Vehicles</p>
-                  </div>
-                  <div className="p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/5">
-                    <p className="text-[8px] font-bold text-slate-500 uppercase">Avg Response</p>
-                    <p className="text-xs font-black text-white">12.4m</p>
-                  </div>
-                </div>
+          <BaseWidget title="Live Fleet Operations" icon={<MapIcon size={18} className="text-primary" />}>
+            <div className="h-full w-full rounded-2xl overflow-hidden relative group">
+              <Map center={[26.2389, 73.0243]} zoom={12} className="h-full w-full" />
+              <div className="absolute top-4 right-4 z-[10] flex flex-col gap-2">
+                <Badge className="bg-black/60 backdrop-blur-md border-white/10 text-[10px] font-bold py-1">
+                  <Activity size={10} className="mr-1 text-emerald-500 animate-pulse" />
+                  142 ACTIVE
+                </Badge>
               </div>
             </div>
           </BaseWidget>
         );
-      case 'chart':
+      case 'analytics':
         return (
-          <BaseWidget title={widget.title} icon={<BarChart3 size={18} className="text-purple-500" />}>
-            <div className="h-full flex flex-col">
-              <div className="flex items-center justify-between mb-4">
+          <BaseWidget title="Efficiency Metrics" icon={<TrendingUp size={18} className="text-purple-500" />}>
+            <div className="flex flex-col h-full">
+              <div className="flex justify-between items-center mb-6">
                 <div>
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Revenue Forecast</p>
-                  <p className="text-xl font-black text-white">$452K Expected</p>
+                  <p className="text-2xl font-black tracking-tight">94.2%</p>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Route Optimization</p>
                 </div>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-white/5">
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl hover:bg-white/5 drag-handle cursor-grab active:cursor-grabbing">
                   <MousePointer2 size={14} className="text-muted-foreground" />
                 </Button>
               </div>
@@ -154,7 +141,8 @@ export function DashboardGrid() {
                     dataLabels: { enabled: false }
                   }}
                   series={[
-                    { name: 'Revenue', data: [400, 300, 600, 800, 500, 900, 700] },
+                    { name: 'Planned', data: [31, 40, 28, 51, 42, 109, 100] },
+                    { name: 'Actual', data: [11, 32, 45, 32, 34, 52, 41] }
                   ]}
                   type="area"
                   height="100%"
@@ -196,14 +184,14 @@ export function DashboardGrid() {
   return (
     <div ref={containerRef} className="w-full h-full min-h-[800px]">
       {mounted && (
-        <Responsive
+        <ResponsiveGridLayout
           width={width}
           className="layout"
           layouts={{ lg: widgets.map(w => ({ i: w.id, x: w.x, y: w.y, w: w.w, h: w.h })) }}
           breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xss: 0 }}
           cols={{ lg: 12, md: 10, sm: 6, xs: 4, xss: 2 }}
           rowHeight={60}
-          draggableHandle=".drag-handle"
+          dragConfig={{ handle: ".drag-handle" }}
           onLayoutChange={onLayoutChange}
           margin={[24, 24]}
         >
@@ -212,7 +200,7 @@ export function DashboardGrid() {
               {renderWidget(widget)}
             </div>
           ))}
-        </Responsive>
+        </ResponsiveGridLayout>
       )}
     </div>
   );
