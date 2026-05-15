@@ -178,7 +178,7 @@
 }
 
 .react-grid-placeholder {
-  @apply bg-primary/10 rounded-2xl border-2 border-dashed border-primary/30 !important;
+  @apply !bg-primary/10 !rounded-2xl !border-2 !border-dashed !border-primary/30;
   opacity: 0.5;
   transition-duration: 100ms;
   z-index: 2;
