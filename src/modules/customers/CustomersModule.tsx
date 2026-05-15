@@ -11,13 +11,10 @@ import {
   Edit, 
   Trash2, 
   Plus, 
-  Truck, 
   CheckCircle2,
   Clock,
   XCircle,
   Filter,
-  Download,
-  Share2,
   Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -86,10 +83,8 @@ export function CustomersModule() {
       id: "actions",
       cell: ({ row }) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0 rounded-lg hover:bg-white/5">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+          <DropdownMenuTrigger className="h-8 w-8 p-0 rounded-lg hover:bg-white/5 flex items-center justify-center">
+            <MoreHorizontal className="h-4 w-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 glass border-white/10">
             <DropdownMenuItem className="cursor-pointer gap-2 text-xs font-medium"><Eye size={14} className="text-primary" /> View Details</DropdownMenuItem>

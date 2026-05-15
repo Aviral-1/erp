@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { 
-  Clock, Plus, ChevronLeft, ChevronRight, MoreVertical, Truck, Zap, CheckCircle2, AlertCircle
+  Clock, Plus, ChevronLeft, ChevronRight, MoreVertical, Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

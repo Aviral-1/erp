@@ -14,7 +14,7 @@ const icon = L.icon({
   iconAnchor: [12, 41],
 });
 
-interface MapProps {
+export interface MapProps {
   center: [number, number];
   zoom: number;
   className?: string;

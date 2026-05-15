@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { BottomDock } from './BottomDock';
@@ -12,12 +12,10 @@ import { useTabsStore } from '@/store/useTabsStore';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function DashboardLayout({ children }: { children: ReactNode }) {
+export function DashboardLayout() {
   const { 
     theme, 
     showBottomDock, 
-    sidebarCollapsed, 
-    sidebarPosition 
   } = useLayoutStore();
 
   const { activeTabId, secondaryTabId, splitMode } = useTabsStore();

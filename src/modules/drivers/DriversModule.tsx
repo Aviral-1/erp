@@ -4,7 +4,7 @@ import React from 'react';
 import { DataTable } from '@/components/shared/DataTable';
 import { ColumnDef } from '@tanstack/react-table';
 import { 
-  Truck, Star, MapPin, ShieldCheck, MoreHorizontal, Plus, Filter, Zap, Clock
+  Truck, Star, ShieldCheck, MoreHorizontal, Plus, Zap, MapPin as MapPinIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -84,13 +84,11 @@ export function DriversModule() {
       id: "actions",
       cell: ({ row }) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0 rounded-lg hover:bg-white/5">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+          <DropdownMenuTrigger className="h-8 w-8 p-0 rounded-lg hover:bg-white/5 flex items-center justify-center">
+            <MoreHorizontal className="h-4 w-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 glass border-white/10">
-            <DropdownMenuItem className="gap-2 text-xs font-medium"><MapPin size={14} /> Track Live</DropdownMenuItem>
+            <DropdownMenuItem className="gap-2 text-xs font-medium"><MapPinIcon size={14} /> Track Live</DropdownMenuItem>
             <DropdownMenuSeparator className="bg-white/5" />
             <DropdownMenuItem className="gap-2 text-xs font-medium text-red-500">Suspend Driver</DropdownMenuItem>
           </DropdownMenuContent>

@@ -3,12 +3,12 @@
 import React from 'react';
 import { useTabsStore, Tab } from '@/store/useTabsStore';
 import { cn } from '@/lib/utils';
-import { X, LayoutDashboard, Users, Map as MapIcon, Truck, BarChart3, Wallet, Zap, Calendar, Columns2, MoreVertical } from 'lucide-react';
+import { LucideIcon, X, LayoutDashboard, Users, Map as MapIcon, Truck, BarChart3, Wallet, Zap, Calendar, Columns2, MoreVertical } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const iconMap: any = {
+const iconMap: Record<string, LucideIcon> = {
   LayoutDashboard,
   Users,
   MapIcon,
@@ -33,8 +33,8 @@ export function TabBar() {
           return (
             <motion.div
               key={tab.id}
-              initial={{ opacity: 0, w: 0 }}
-              animate={{ opacity: 1, w: 'auto' }}
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: 'auto' }}
               exit={{ opacity: 0, scale: 0.8 }}
               className={cn(
                 "group flex items-center gap-2 px-4 h-full min-w-[120px] max-w-[200px] cursor-pointer transition-all relative border-x border-white/5",

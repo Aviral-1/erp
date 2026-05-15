@@ -59,7 +59,7 @@ const INITIAL_DRIVERS = [
 
 export default function LiveMap() {
   const [drivers, setDrivers] = useState(INITIAL_DRIVERS);
-  const [selectedDriver, setSelectedDriver] = useState<any>(null);
+  const [selectedDriver, setSelectedDriver] = useState<typeof INITIAL_DRIVERS[0] | null>(null);
   const center: [number, number] = [26.2389, 73.0243];
 
   // Simulate movement

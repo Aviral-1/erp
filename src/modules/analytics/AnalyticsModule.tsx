@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+import { ApexOptions } from 'apexcharts';
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export function AnalyticsModule() {
-  const chartOptions: any = {
+  const chartOptions: ApexOptions = {
     chart: { toolbar: { show: false }, background: 'transparent' },
     stroke: { curve: 'smooth', width: 3 },
     colors: ['#3b82f6', '#8b5cf6'],

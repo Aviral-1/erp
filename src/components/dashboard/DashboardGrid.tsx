@@ -1,7 +1,12 @@
 "use client";
 
 import React from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Responsive } from 'react-grid-layout';
+import WidthProvider from 'react-grid-layout/build/WidthProvider';
+import '/node_modules/react-grid-layout/css/styles.css';
+import '/node_modules/react-resizable/css/styles.css';
+import '/node_modules/react-grid-layout/css/styles.css';
+import '/node_modules/react-resizable/css/styles.css';
 import { useLayoutStore, WidgetConfig } from '@/store/useLayoutStore';
 import { BaseWidget } from './BaseWidget';
 import { 
@@ -20,13 +25,17 @@ import {
   MousePointer2
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { MapProps } from '@/components/shared/Map';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 // Dynamic imports
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
-const Map = dynamic(() => import('../shared/Map'), { ssr: false });
+const Map = dynamic<MapProps>(() => import('@/components/shared/Map'), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-slate-900/50 animate-pulse" />
+});
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 

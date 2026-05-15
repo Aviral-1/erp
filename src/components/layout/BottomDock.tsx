@@ -1,18 +1,16 @@
 "use client";
 
 import React from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, MotionValue } from 'framer-motion';
 import { 
+  LucideIcon,
   LayoutDashboard, 
   Users, 
   Truck, 
   Map as MapIcon, 
   BarChart3, 
   Settings, 
-  MessageSquare,
-  Search,
-  Bell,
-  Cpu
+  MessageSquare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLayoutStore } from '@/store/useLayoutStore';
@@ -56,7 +54,14 @@ export function BottomDock() {
   );
 }
 
-function DockIcon({ mouseX, icon: Icon, label, href }: any) {
+interface DockIconProps {
+  mouseX: MotionValue<number>;
+  icon: LucideIcon;
+  label: string;
+  href: string;
+}
+
+function DockIcon({ mouseX, icon: Icon, label, href }: DockIconProps) {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const distance = useTransform(mouseX, (val) => {
