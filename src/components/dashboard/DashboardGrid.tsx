@@ -1,10 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Responsive } from 'react-grid-layout';
-import WidthProvider from 'react-grid-layout/build/WidthProvider';
-import '/node_modules/react-grid-layout/css/styles.css';
-import '/node_modules/react-resizable/css/styles.css';
+import { Responsive, useContainerWidth } from 'react-grid-layout';
 import '/node_modules/react-grid-layout/css/styles.css';
 import '/node_modules/react-resizable/css/styles.css';
 import { useLayoutStore, WidgetConfig } from '@/store/useLayoutStore';
@@ -37,10 +34,9 @@ const Map = dynamic<MapProps>(() => import('@/components/shared/Map'), {
   loading: () => <div className="w-full h-full bg-slate-900/50 animate-pulse" />
 });
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
-
 export function DashboardGrid() {
-  const { widgets, updateWidgets, theme } = useLayoutStore();
+  const { widgets, updateWidgets } = useLayoutStore();
+  const { width, containerRef, mounted } = useContainerWidth();
 
   const onLayoutChange = (currentLayout: any) => {
     const updatedWidgets = widgets.map(w => {
@@ -198,21 +194,26 @@ export function DashboardGrid() {
   };
 
   return (
-    <ResponsiveGridLayout
-      className="layout"
-      layouts={{ lg: widgets.map(w => ({ i: w.id, x: w.x, y: w.y, w: w.w, h: w.h })) }}
-      breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xss: 0 }}
-      cols={{ lg: 12, md: 10, sm: 6, xs: 4, xss: 2 }}
-      rowHeight={60}
-      draggableHandle=".drag-handle"
-      onLayoutChange={onLayoutChange}
-      margin={[24, 24]}
-    >
-      {widgets.filter(w => w.visible).map(widget => (
-        <div key={widget.id} className="h-full">
-          {renderWidget(widget)}
-        </div>
-      ))}
-    </ResponsiveGridLayout>
+    <div ref={containerRef} className="w-full h-full min-h-[800px]">
+      {mounted && (
+        <Responsive
+          width={width}
+          className="layout"
+          layouts={{ lg: widgets.map(w => ({ i: w.id, x: w.x, y: w.y, w: w.w, h: w.h })) }}
+          breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xss: 0 }}
+          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xss: 2 }}
+          rowHeight={60}
+          draggableHandle=".drag-handle"
+          onLayoutChange={onLayoutChange}
+          margin={[24, 24]}
+        >
+          {widgets.filter(w => w.visible).map(widget => (
+            <div key={widget.id} className="h-full">
+              {renderWidget(widget)}
+            </div>
+          ))}
+        </Responsive>
+      )}
+    </div>
   );
 }
