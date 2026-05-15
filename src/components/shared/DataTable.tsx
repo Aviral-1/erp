@@ -33,12 +33,13 @@ import {
   SlidersHorizontal,
   ChevronDown
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
+import { 
+  DropdownMenu, 
+  DropdownMenuCheckboxItem, 
+  DropdownMenuContent, 
+  DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData, TValue> {
@@ -95,12 +96,10 @@ export function DataTable<TData, TValue>({
 
         <div className="flex items-center gap-3">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-2xl h-11 gap-2 hidden md:flex glass border-white/10 hover:bg-white/5 text-xs font-bold uppercase tracking-wider">
+            <DropdownMenuTrigger className={cn(buttonVariants({ variant: "outline" }), "rounded-2xl h-11 gap-2 hidden md:flex glass border-white/10 hover:bg-white/5 text-xs font-bold uppercase tracking-wider")}>
                 <SlidersHorizontal size={14} />
                 Visibility
                 <ChevronDown size={14} />
-              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 glass border-white/10">
               {table

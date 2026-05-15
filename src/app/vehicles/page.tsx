@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 
 interface Vehicle {
   id: string;
@@ -131,10 +132,8 @@ export default function VehiclesPage() {
       id: "actions",
       cell: ({ row }) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0 rounded-lg hover:bg-white/5">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+          <DropdownMenuTrigger className={cn(buttonVariants({ variant: "ghost" }), "h-8 w-8 p-0 rounded-lg hover:bg-white/5")}>
+            <MoreHorizontal className="h-4 w-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 glass border-white/10">
             <DropdownMenuItem className="gap-2 text-xs font-medium"><Activity size={14} /> Telemetry Data</DropdownMenuItem>
