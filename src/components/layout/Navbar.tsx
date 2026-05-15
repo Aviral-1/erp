@@ -4,119 +4,132 @@ import React from 'react';
 import { 
   Search, 
   Bell, 
-  User, 
   Moon, 
   Sun, 
-  Command,
-  Maximize,
-  Menu,
-  Settings
+  Command, 
+  Layout, 
+  Maximize2, 
+  Plus, 
+  Settings2,
+  Cpu,
+  Globe,
+  Monitor
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { useAppStore } from '@/store/useAppStore';
+import { useLayoutStore } from '@/store/useLayoutStore';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 export function Navbar() {
-  const { theme, setTheme } = useAppStore();
+  const { 
+    theme, 
+    setTheme, 
+    sidebarPosition, 
+    setSidebarPosition,
+    sidebarMode,
+    setSidebarMode,
+    showBottomDock,
+    setShowBottomDock,
+    showRightPanel,
+    setShowRightPanel
+  } = useLayoutStore();
+
+  const isDark = theme === 'glass-dark' || theme === 'cyber-neon';
 
   return (
-    <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40 px-6 flex items-center justify-between">
-      <div className="flex items-center gap-4 flex-1">
-        <div className="relative max-w-md w-full group hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" size={18} />
-          <Input 
-            placeholder="Search anything... (Ctrl + K)" 
-            className="pl-10 bg-slate-100/50 border-transparent focus:bg-white focus:border-primary transition-all rounded-xl"
+    <header className={cn(
+      "h-16 px-6 flex items-center justify-between z-40 transition-all duration-300",
+      isDark ? "bg-black/20 backdrop-blur-md border-b border-white/5" : "bg-white/40 backdrop-blur-md border-b border-slate-200"
+    )}>
+      {/* Search & Command Palette */}
+      <div className="flex items-center gap-4 flex-1 max-w-xl">
+        <div className="relative group flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
+          <input 
+            type="text" 
+            placeholder="Search anything... (Cmd + K)"
+            className={cn(
+              "w-full h-10 pl-10 pr-4 rounded-xl text-sm transition-all duration-300 border focus:outline-none focus:ring-2",
+              isDark 
+                ? "bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:ring-primary/40 focus:border-primary/40" 
+                : "bg-slate-100/50 border-slate-200 focus:ring-primary/20 focus:border-primary"
+            )}
           />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 text-[10px] font-medium text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded shadow-sm">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-[10px] font-bold text-muted-foreground pointer-events-none">
             <Command size={10} />
             <span>K</span>
           </div>
         </div>
+        
+        <Button variant="outline" size="sm" className="hidden md:flex items-center gap-2 rounded-xl bg-primary/5 border-primary/20 hover:bg-primary/10 text-primary">
+          <Plus size={16} />
+          <span>Quick Create</span>
+        </Button>
       </div>
 
-      <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="rounded-full relative">
-          <Bell size={20} className="text-slate-600 dark:text-slate-400" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+      {/* Tools & Settings */}
+      <div className="flex items-center gap-2">
+        {/* Layout Customizer Trigger */}
+        <div className="flex items-center gap-1 mr-4 bg-white/5 p-1 rounded-xl border border-white/5">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={cn("w-8 h-8 rounded-lg", sidebarPosition === 'left' ? "bg-primary/20 text-primary" : "text-muted-foreground")}
+            onClick={() => setSidebarPosition('left')}
+          >
+            <Layout size={16} className="rotate-0" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={cn("w-8 h-8 rounded-lg", sidebarPosition === 'right' ? "bg-primary/20 text-primary" : "text-muted-foreground")}
+            onClick={() => setSidebarPosition('right')}
+          >
+            <Layout size={16} className="rotate-180" />
+          </Button>
+          <div className="w-px h-4 bg-white/10 mx-1" />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={cn("w-8 h-8 rounded-lg", showRightPanel ? "bg-purple-500/20 text-purple-400" : "text-muted-foreground")}
+            onClick={() => setShowRightPanel(!showRightPanel)}
+          >
+            <Settings2 size={16} />
+          </Button>
+        </div>
+
+        {/* Sync Status */}
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-bold uppercase tracking-wider mr-4">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          Live Sync
+        </div>
+
+        <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-primary rounded-xl">
+          <Bell size={20} />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background" />
         </Button>
 
         <Button 
           variant="ghost" 
           size="icon" 
-          className="rounded-full"
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className="text-muted-foreground hover:text-primary rounded-xl"
+          onClick={() => setTheme(isDark ? 'clean-light' : 'glass-dark')}
         >
-          {theme === 'dark' ? (
-            <Sun size={20} className="text-slate-400" />
-          ) : (
-            <Moon size={20} className="text-slate-600" />
-          )}
+          {isDark ? <Sun size={20} /> : <Moon size={20} />}
         </Button>
 
-        <div className="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+        <div className="w-px h-8 bg-white/10 mx-2" />
 
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-              <Avatar className="h-10 w-10 border-2 border-slate-100 dark:border-slate-800 transition-transform hover:scale-105">
-                <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-                <AvatarFallback>AD</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 mt-2" align="end">
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">Ashish Dangi</p>
-                <p className="text-xs leading-none text-slate-500">ashish@wastewise.com</p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer text-red-500 focus:text-red-500">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-3 pl-2">
+          <div className="flex flex-col items-end hidden sm:flex">
+            <span className="text-xs font-bold leading-none">Global Ops</span>
+            <span className="text-[10px] text-muted-foreground uppercase tracking-tighter">Instance: #4209</span>
+          </div>
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 cursor-pointer hover:scale-105 transition-transform">
+            <Cpu size={18} />
+          </div>
+        </div>
       </div>
     </header>
   );
 }
-
-const LogOut = ({ className, size }: { className?: string; size?: number }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size || 24}
-    height={size || 24}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-    <polyline points="16 17 21 12 16 7" />
-    <line x1="21" y1="12" x2="9" y2="12" />
-  </svg>
-);
