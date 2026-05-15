@@ -5,6 +5,7 @@ import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { BottomDock } from './BottomDock';
 import { RightPanel } from './RightPanel';
+import { TabBar } from './TabBar';
 import { useLayoutStore } from '@/store/useLayoutStore';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -35,6 +36,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       <div className="flex-1 flex flex-col min-w-0 relative h-full">
         <Navbar />
+        <TabBar />
         
         <main className={cn(
           "flex-1 overflow-y-auto no-scrollbar relative p-6 transition-all duration-500",

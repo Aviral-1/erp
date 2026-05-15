@@ -147,6 +147,16 @@
 }
 
 /* Custom Grid Layout styles */
+[data-density="compact"] {
+  --padding-page: 1rem;
+  --gap-grid: 0.75rem;
+}
+
+[data-density="relaxed"] {
+  --padding-page: 2rem;
+  --gap-grid: 1.5rem;
+}
+
 .react-grid-layout {
   position: relative;
   transition: height 200ms ease;

@@ -26,21 +26,22 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useLayoutStore } from '@/store/useLayoutStore';
+import { useTabsStore } from '@/store/useTabsStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const menuItems = [
   { group: 'Overview', items: [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
-    { icon: MapIcon, label: 'Live Map', href: '/map', badge: 'Live' },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', id: 'dashboard', iconKey: 'LayoutDashboard' },
+    { icon: MapIcon, label: 'Live Map', href: '/map', badge: 'Live', id: 'map', iconKey: 'MapIcon' },
   ]},
   { group: 'Operations', items: [
-    { icon: Users, label: 'Customers', href: '/customers' },
-    { icon: Truck, label: 'Vehicles', href: '/vehicles' },
-    { icon: Zap, label: 'Collection Requests', href: '/requests' },
+    { icon: Users, label: 'Customers', href: '/customers', id: 'customers', iconKey: 'Users' },
+    { icon: Truck, label: 'Vehicles', href: '/vehicles', id: 'vehicles', iconKey: 'Truck' },
+    { icon: Zap, label: 'Drivers', href: '/drivers', id: 'drivers', iconKey: 'Truck' },
   ]},
-  { group: 'Analytics', items: [
-    { icon: BarChart3, label: 'Performance', href: '/analytics' },
-    { icon: FileText, label: 'Reports', href: '/reports' },
+  { group: 'Finance', items: [
+    { icon: Wallet, label: 'Billing', href: '/billing', id: 'billing', iconKey: 'Wallet' },
+    { icon: BarChart3, label: 'Analytics', href: '/analytics', id: 'analytics', iconKey: 'BarChart3' },
   ]},
 ];
 
@@ -53,6 +54,8 @@ export function Sidebar() {
     sidebarMode,
     theme 
   } = useLayoutStore();
+
+  const { addTab } = useTabsStore();
 
   const isDark = theme === 'glass-dark' || theme === 'cyber-neon';
 
@@ -120,7 +123,16 @@ export function Sidebar() {
             {group.items.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href}>
+                <Link 
+                  key={item.href} 
+                  href={item.href}
+                  onClick={() => addTab({ 
+                    id: item.id, 
+                    label: item.label, 
+                    href: item.href, 
+                    icon: item.iconKey 
+                  })}
+                >
                   <div className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative",
                     isActive 

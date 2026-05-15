@@ -16,18 +16,19 @@ export function Providers({ children }: { children: ReactNode }) {
     },
   }));
 
-  const { theme } = useLayoutStore();
+  const { theme, layoutDensity } = useLayoutStore();
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('dark', 'glass-dark', 'cyber-neon');
+    root.classList.remove('dark', 'glass', 'glass-dark', 'cyber-neon');
     
     if (theme === 'glass-dark' || theme === 'cyber-neon') {
       root.classList.add('dark');
     }
     
     root.classList.add(theme);
-  }, [theme]);
+    root.setAttribute('data-density', layoutDensity);
+  }, [theme, layoutDensity]);
 
   return (
     <QueryClientProvider client={queryClient}>

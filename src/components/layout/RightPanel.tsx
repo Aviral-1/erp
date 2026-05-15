@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { useLayoutStore } from '@/store/useLayoutStore';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AIAssistant } from '@/components/shared/AIAssistant';
 
 export function RightPanel() {
   const { showRightPanel, setShowRightPanel, theme } = useLayoutStore();
@@ -94,23 +95,9 @@ export function RightPanel() {
             </section>
 
             {/* AI Assistant Context */}
-            <section className="p-4 rounded-3xl bg-gradient-to-br from-primary/10 via-purple-500/10 to-transparent border border-white/10 relative overflow-hidden">
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
-                    <MessageSquare size={12} />
-                  </div>
-                  <h4 className="text-xs font-bold">AI Suggestion</h4>
-                </div>
-                <p className="text-[10px] text-muted-foreground leading-relaxed mb-4">
-                  "Collection efficiency at **Site B** is down by **8%**. Suggest rerouting Driver #42 to assist."
-                </p>
-                <Button size="sm" className="h-7 text-[10px] w-full bg-primary hover:bg-primary/80 text-white rounded-xl">
-                  Execute Recommendation
-                </Button>
-              </div>
-              <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/20 rounded-full blur-3xl" />
-            </section>
+            <div className="flex-1 min-h-[400px]">
+              <AIAssistant />
+            </div>
 
             {/* Calendar / Schedule */}
             <section className="space-y-4">
