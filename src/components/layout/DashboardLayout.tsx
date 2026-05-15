@@ -28,10 +28,11 @@ export function DashboardLayout({ children }: { children?: React.ReactNode }) {
       theme === 'cyber-neon' ? "bg-black" : isDark ? "bg-[#020617]" : "bg-slate-50"
     )}>
       {/* Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
+      <div className="fixed inset-0 z-0 bg-dots">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(59,130,246,0.15),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(147,51,234,0.1),transparent_50%)]" />
         {theme === 'cyber-neon' && (
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,18,18,0.8)_2px,transparent_2px),linear-gradient(90deg,rgba(18,18,18,0.8)_2px,transparent_2px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,18,18,0.8)_2px,transparent_2px),linear-gradient(90deg,rgba(18,18,18,0.8)_2px,transparent_2px)] bg-[size:64px_64px] opacity-10" />
         )}
       </div>
 
