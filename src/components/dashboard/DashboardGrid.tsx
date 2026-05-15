@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { ResponsiveGridLayout, useContainerWidth } from 'react-grid-layout';
+import { ResponsiveGridLayout, useContainerWidth, Layout, LayoutItem } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useLayoutStore, WidgetConfig } from '@/store/useLayoutStore';
@@ -38,9 +38,9 @@ export function DashboardGrid() {
   const { widgets, updateWidgets } = useLayoutStore();
   const { width, containerRef, mounted } = useContainerWidth();
 
-  const onLayoutChange = (currentLayout: any) => {
+  const onLayoutChange = (currentLayout: Layout) => {
     const updatedWidgets = widgets.map(w => {
-      const layoutItem = currentLayout.find((l: any) => l.i === w.id);
+      const layoutItem = currentLayout.find((l: LayoutItem) => l.i === w.id);
       if (layoutItem) {
         return {
           ...w,
@@ -55,7 +55,7 @@ export function DashboardGrid() {
     updateWidgets(updatedWidgets);
   };
 
-  const renderWidget = (widget: any) => {
+  const renderWidget = (widget: WidgetConfig) => {
     const isRevenue = widget.type === 'revenue';
     
     switch (widget.type) {

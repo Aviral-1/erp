@@ -273,7 +273,7 @@ export default function CustomerDetailsPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-xs text-slate-500 leading-relaxed italic">
-                  "Entry from back gate only before 10 AM. Contact manager if gate is locked."
+                  &quot;Entry from back gate only before 10 AM. Contact manager if gate is locked.&quot;
                 </p>
               </CardContent>
             </Card>

@@ -21,12 +21,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ApexOptions } from 'apexcharts';
 
 // Dynamic import for ApexCharts
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function AnalyticsPage() {
-  const chartOptions: any = {
+  const chartOptions: ApexOptions = {
     chart: {
       toolbar: { show: false },
       background: 'transparent',
@@ -54,7 +55,7 @@ export default function AnalyticsPage() {
     tooltip: { theme: 'dark', x: { show: false } }
   };
 
-  const donutOptions: any = {
+  const donutOptions: ApexOptions = {
     chart: { background: 'transparent' },
     colors: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
     labels: ['Zone A', 'Zone B', 'Zone C', 'Zone D'],
@@ -212,7 +213,7 @@ export default function AnalyticsPage() {
                     <div className={cn("w-2 h-2 rounded-full", i === 0 ? 'bg-blue-500' : i === 1 ? 'bg-purple-500' : i === 2 ? 'bg-emerald-500' : 'bg-amber-500')} />
                     <span className="text-xs font-bold text-slate-300">{zone}</span>
                   </div>
-                  <span className="text-xs font-black text-white">{(Math.random() * 1000).toFixed(0)} Tons</span>
+                  <span className="text-xs font-black text-white">{(i + 1) * 240} Tons</span>
                 </div>
               ))}
             </div>
@@ -238,7 +239,7 @@ export default function AnalyticsPage() {
               </p>
               <div className="flex gap-4 mt-8 justify-center md:justify-start">
                 <Button className="rounded-2xl bg-white text-black hover:bg-white/90 text-xs font-bold px-8 h-12 shadow-xl">
-                  Approve Reroute
+                   Approve Reroute
                 </Button>
                 <Button variant="ghost" className="rounded-2xl text-white hover:bg-white/5 text-xs font-bold px-8 h-12 border border-white/10">
                   Analyze Scenarios
@@ -255,7 +256,7 @@ export default function AnalyticsPage() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </DashboardLayout>
   );

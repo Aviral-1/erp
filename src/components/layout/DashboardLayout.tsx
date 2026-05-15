@@ -12,7 +12,7 @@ import { useTabsStore } from '@/store/useTabsStore';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function DashboardLayout() {
+export function DashboardLayout({ children }: { children?: React.ReactNode }) {
   const { 
     theme, 
     showBottomDock, 
@@ -45,26 +45,34 @@ export function DashboardLayout() {
           "flex-1 overflow-hidden relative p-4 transition-all duration-500 flex gap-4",
           showBottomDock && "pb-24"
         )}>
-          {/* Multi-Tab / Split View Host */}
-          <div className={cn(
-            "flex-1 h-full overflow-y-auto no-scrollbar rounded-3xl transition-all duration-500",
-            splitMode && "max-w-[50%]"
-          )}>
-            <ModuleHost moduleId={activeTabId} />
-          </div>
+          {children ? (
+            <div className="flex-1 h-full overflow-y-auto no-scrollbar rounded-3xl">
+              {children}
+            </div>
+          ) : (
+            <>
+              {/* Multi-Tab / Split View Host */}
+              <div className={cn(
+                "flex-1 h-full overflow-y-auto no-scrollbar rounded-3xl transition-all duration-500",
+                splitMode && "max-w-[50%]"
+              )}>
+                <ModuleHost moduleId={activeTabId} />
+              </div>
 
-          <AnimatePresence>
-            {splitMode && (
-              <motion.div 
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 100 }}
-                className="flex-1 h-full overflow-y-auto no-scrollbar rounded-3xl glass-dark border-white/5"
-              >
-                <ModuleHost moduleId={secondaryTabId || 'analytics'} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              <AnimatePresence>
+                {splitMode && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    className="flex-1 h-full overflow-y-auto no-scrollbar rounded-3xl glass-dark border-white/5"
+                  >
+                    <ModuleHost moduleId={secondaryTabId || 'analytics'} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
+          )}
         </main>
         
         <BottomDock />
