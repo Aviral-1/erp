@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTabsStore, Tab } from '@/store/useTabsStore';
 import { cn } from '@/lib/utils';
-import { X, LayoutDashboard, Users, Map as MapIcon, Truck, BarChart3, Wallet, Zap, Calendar } from 'lucide-react';
+import { X, LayoutDashboard, Users, Map as MapIcon, Truck, BarChart3, Wallet, Zap, Calendar, Columns2, MoreVertical } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,7 +20,7 @@ const iconMap: any = {
 };
 
 export function TabBar() {
-  const { tabs, activeTabId, removeTab, setActiveTab } = useTabsStore();
+  const { tabs, activeTabId, removeTab, setActiveTab, splitMode, toggleSplitMode } = useTabsStore();
   const pathname = usePathname();
 
   return (
@@ -72,6 +72,19 @@ export function TabBar() {
           );
         })}
       </AnimatePresence>
+
+      <div className="ml-auto flex items-center gap-2 pr-4 border-l border-white/5 pl-4">
+        <button 
+          onClick={toggleSplitMode}
+          className={cn(
+            "p-2 rounded-xl transition-all",
+            splitMode ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+          )}
+          title="Toggle Split View"
+        >
+          <Columns2 size={16} />
+        </button>
+      </div>
     </div>
   );
 }

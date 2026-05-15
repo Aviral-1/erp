@@ -12,11 +12,19 @@ import {
   Activity, 
   BarChart3,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  Zap,
+  Target,
+  ArrowUpRight,
+  ShieldCheck,
+  MousePointer2
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
-// Dynamic imports for chart/map components to avoid SSR issues
+// Dynamic imports
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 const Map = dynamic(() => import('../shared/Map'), { ssr: false });
 
@@ -45,25 +53,33 @@ export function DashboardGrid() {
   const renderWidget = (widget: WidgetConfig) => {
     switch (widget.type) {
       case 'stats':
+        const isRevenue = widget.id.includes('revenue');
         return (
-          <BaseWidget title={widget.title} icon={widget.id.includes('revenue') ? <TrendingUp size={18} /> : <Users size={18} />}>
+          <BaseWidget title={widget.title} icon={isRevenue ? <TrendingUp size={18} className="text-primary" /> : <Users size={18} className="text-emerald-500" />}>
             <div className="flex flex-col h-full justify-between">
               <div>
-                <p className="text-3xl font-bold tracking-tight">
-                  {widget.id.includes('revenue') ? '$128,430' : '2,840'}
-                </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded-md">+12.5%</span>
-                  <span className="text-[10px] text-muted-foreground">vs last month</span>
+                <div className="flex items-end gap-3">
+                  <h3 className="text-4xl font-black tracking-tighter">
+                    {isRevenue ? '$128.4K' : '2,840'}
+                  </h3>
+                  <Badge className={cn(
+                    "mb-1 text-[10px] font-bold border-none",
+                    isRevenue ? "bg-primary/10 text-primary" : "bg-emerald-500/10 text-emerald-500"
+                  )}>
+                    <ArrowUpRight size={10} className="mr-1" />
+                    12.5%
+                  </Badge>
                 </div>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">Growth Index</p>
               </div>
-              <div className="h-16 w-full opacity-50">
+              <div className="h-20 w-full mt-4">
                 <Chart 
                   options={{
-                    chart: { sparkline: { enabled: true }, animations: { enabled: true } },
-                    stroke: { curve: 'smooth', width: 2 },
-                    colors: [widget.id.includes('revenue') ? '#3b82f6' : '#10b981'],
-                    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0 } },
+                    chart: { sparkline: { enabled: true }, animations: { enabled: true, speed: 1000 } },
+                    stroke: { curve: 'smooth', width: 3 },
+                    colors: [isRevenue ? '#3b82f6' : '#10b981'],
+                    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.6, opacityTo: 0.1 } },
+                    tooltip: { enabled: false }
                   }}
                   series={[{ data: [30, 40, 35, 50, 49, 60, 70, 91, 125] }]}
                   type="area"
@@ -75,14 +91,28 @@ export function DashboardGrid() {
         );
       case 'map':
         return (
-          <BaseWidget title={widget.title} icon={<MapIcon size={18} />} className="p-0">
-            <div className="w-full h-full rounded-2xl overflow-hidden bg-slate-900/50 relative">
-              <Map center={[51.505, -0.09]} zoom={13} className="w-full h-full" />
-              {/* Overlay elements */}
-              <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-                <div className="px-3 py-1.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[10px] font-bold">12 Active Drivers</span>
+          <BaseWidget title={widget.title} icon={<MapIcon size={18} className="text-blue-400" />} className="p-0">
+            <div className="w-full h-full rounded-[24px] overflow-hidden bg-slate-950 relative border border-white/5 shadow-inner">
+              <Map center={[26.2389, 73.0243]} zoom={12} className="w-full h-full grayscale-[0.8] contrast-[1.2]" />
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              
+              <div className="absolute top-4 left-4 z-10">
+                <div className="px-3 py-1.5 rounded-xl glass-dark border-white/10 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-white">Live Operations</span>
+                </div>
+              </div>
+
+              <div className="absolute bottom-4 left-4 right-4 z-10">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/5">
+                    <p className="text-[8px] font-bold text-slate-500 uppercase">Active Fleet</p>
+                    <p className="text-xs font-black text-white">38 Vehicles</p>
+                  </div>
+                  <div className="p-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/5">
+                    <p className="text-[8px] font-bold text-slate-500 uppercase">Avg Response</p>
+                    <p className="text-xs font-black text-white">12.4m</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -90,37 +120,64 @@ export function DashboardGrid() {
         );
       case 'chart':
         return (
-          <BaseWidget title={widget.title} icon={<BarChart3 size={18} />}>
-            <Chart 
-              options={{
-                chart: { background: 'transparent', toolbar: { show: false } },
-                theme: { mode: 'dark' },
-                xaxis: { categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
-                colors: ['#3b82f6', '#8b5cf6'],
-                stroke: { curve: 'smooth' },
-                grid: { borderColor: 'rgba(255,255,255,0.05)' },
-              }}
-              series={[
-                { name: 'Revenue', data: [400, 300, 600, 800, 500, 900, 700] },
-                { name: 'Costs', data: [300, 200, 400, 500, 300, 600, 400] }
-              ]}
-              type="bar"
-              height="100%"
-            />
+          <BaseWidget title={widget.title} icon={<BarChart3 size={18} className="text-purple-500" />}>
+            <div className="h-full flex flex-col">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Revenue Forecast</p>
+                  <p className="text-xl font-black text-white">$452K Expected</p>
+                </div>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-white/5">
+                  <MousePointer2 size={14} className="text-muted-foreground" />
+                </Button>
+              </div>
+              <div className="flex-1">
+                <Chart 
+                  options={{
+                    chart: { background: 'transparent', toolbar: { show: false } },
+                    xaxis: { 
+                      categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                      axisBorder: { show: false },
+                      axisTicks: { show: false },
+                      labels: { style: { colors: '#64748b', fontSize: '10px', fontWeight: 600 } }
+                    },
+                    yaxis: { show: false },
+                    colors: ['#3b82f6', '#8b5cf6'],
+                    stroke: { curve: 'smooth', width: 3 },
+                    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.5, opacityTo: 0.1 } },
+                    grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 5 },
+                    dataLabels: { enabled: false }
+                  }}
+                  series={[
+                    { name: 'Revenue', data: [400, 300, 600, 800, 500, 900, 700] },
+                  ]}
+                  type="area"
+                  height="100%"
+                />
+              </div>
+            </div>
           </BaseWidget>
         );
       case 'activity':
         return (
-          <BaseWidget title={widget.title} icon={<Activity size={18} />}>
+          <BaseWidget title={widget.title} icon={<Activity size={18} className="text-amber-500" />}>
             <div className="space-y-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
-                  <div className="flex-1">
-                    <p className="text-xs font-medium">New collection request from Site {i}</p>
-                    <p className="text-[10px] text-muted-foreground">2 minutes ago</p>
+              {[
+                { label: 'Emergency Pickup', site: 'Site 42', time: '2m', color: 'bg-red-500', icon: AlertCircle },
+                { label: 'Route Optimized', site: 'Zone B', time: '12m', color: 'bg-primary', icon: Zap },
+                { label: 'Fleet Sync', site: 'Global', time: '45m', color: 'bg-emerald-500', icon: ShieldCheck },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4 group cursor-pointer p-2 rounded-2xl hover:bg-white/5 transition-colors">
+                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", item.color + "/10", item.color.replace('bg-', 'text-'))}>
+                    <item.icon size={18} />
                   </div>
-                  <Button variant="ghost" size="sm" className="h-6 text-[10px] px-2 rounded-lg">View</Button>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-white truncate">{item.label}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">{item.site} • {item.time} ago</p>
+                  </div>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ArrowUpRight size={14} className="text-primary" />
+                  </div>
                 </div>
               ))}
             </div>
@@ -140,10 +197,10 @@ export function DashboardGrid() {
       rowHeight={60}
       draggableHandle=".drag-handle"
       onLayoutChange={onLayoutChange}
-      margin={[20, 20]}
+      margin={[24, 24]}
     >
       {widgets.filter(w => w.visible).map(widget => (
-        <div key={widget.id}>
+        <div key={widget.id} className="h-full">
           {renderWidget(widget)}
         </div>
       ))}

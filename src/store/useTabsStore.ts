@@ -11,9 +11,13 @@ export interface Tab {
 interface TabsState {
   tabs: Tab[];
   activeTabId: string;
+  secondaryTabId: string | null;
+  splitMode: boolean;
   addTab: (tab: Tab) => void;
   removeTab: (id: string) => void;
   setActiveTab: (id: string) => void;
+  setSecondaryTab: (id: string | null) => void;
+  toggleSplitMode: () => void;
 }
 
 export const useTabsStore = create<TabsState>()(
@@ -21,6 +25,8 @@ export const useTabsStore = create<TabsState>()(
     (set) => ({
       tabs: [{ id: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' }],
       activeTabId: 'dashboard',
+      secondaryTabId: null,
+      splitMode: false,
       addTab: (tab) => set((state) => {
         if (state.tabs.find(t => t.id === tab.id)) {
           return { activeTabId: tab.id };
@@ -33,9 +39,12 @@ export const useTabsStore = create<TabsState>()(
         if (state.activeTabId === id && newTabs.length > 0) {
           newActiveId = newTabs[newTabs.length - 1].id;
         }
-        return { tabs: newTabs, activeTabId: newActiveId };
+        const newSecondaryId = state.secondaryTabId === id ? null : state.secondaryTabId;
+        return { tabs: newTabs, activeTabId: newActiveId, secondaryTabId: newSecondaryId, splitMode: newTabs.length > 1 ? state.splitMode : false };
       }),
       setActiveTab: (id) => set({ activeTabId: id }),
+      setSecondaryTab: (id) => set({ secondaryTabId: id }),
+      toggleSplitMode: () => set((state) => ({ splitMode: !state.splitMode })),
     }),
     {
       name: 'erp-tabs-storage',
