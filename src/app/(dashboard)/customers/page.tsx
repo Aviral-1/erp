@@ -323,7 +323,7 @@ export default function CustomersPage() {
                   </div>
                 </div>
 
-                {/* Logistics Intelligence v xvxcvxcv fg sdfgsdfgsgsgsgsgxcvxcvxcvxcvxcvcxv*/}
+                {/* Logistics Intelligence v xvxcvxcv fdsgsgsgsgsgsg fg sdfgsdfgsgsgsgsgxcvxcvxcvxcvxcvcxv*/}
                 <section>
                   <h3 className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
                     <div className="w-6 h-[1px] bg-primary/30" />
